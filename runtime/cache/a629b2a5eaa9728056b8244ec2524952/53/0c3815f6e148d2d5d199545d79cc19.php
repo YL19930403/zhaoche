@@ -1,0 +1,3 @@
+<?php
+//000000086400[{"goods_id":1,"goods_name":"\u8363\u5a01eRX5 \u4e92\u8054\u5c0a\u8d35\u65d7\u8230\u7248","shop_price":"232900.00"},{"goods_id":2,"goods_name":"\u8363\u5a01ERX5-EV400 \u7535\u52a8\u4e92\u8054\u8c6a\u534e\u7248","shop_price":"247900.00"},{"goods_id":3,"goods_name":"\u8363\u5a01e950 1.4T5\u5ea7\u8c6a\u534e\u7248","shop_price":"249400.00"},{"goods_id":5,"goods_name":"\u6c5f\u6deeiev6E","shop_price":"83500.00"},{"goods_id":6,"goods_name":"\u6c5f\u6deeiev7","shop_price":"118500.00"}]
+?>

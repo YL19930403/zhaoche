@@ -1,0 +1,169 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>机构管理 - 编辑机构</h3>
+                <h5>网站系统机构管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleForm"  method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>机构类型</label>
+                </dt>
+                <dd class="opt">
+                    <input value="0" name="inst_type" id="inst_type0" type="radio" >
+                    <label for="inst_type0">爱车送</label>
+                    <input value="1" name="inst_type"  id="inst_type1" type="radio" >
+                    <label for="inst_type1">全国代理</label>
+                    <input value="2" name="inst_type" id="inst_type2" type="radio" >
+                    <label for="inst_type2">省代理</label>
+                    <input value="3"  name="inst_type" id="inst_type3" type="radio" >
+                    <label for="inst_type3">市代理</label>
+                    <input value="4" name="inst_type" id="inst_type4" type="radio" >
+                    <label for="inst_type4">区县代理</label>
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>机构名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text"  name="inst_name" value="" class="input-txt">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label >上级机构</label>
+                </dt>
+                <dd class="opt">
+                    <div>
+                        <select  onblur="get_city(this)" name="parent_inst" class="input-sm" class="form-control" title="请选择上级机构">
+                            <option value="">选择上级机构</option>
+                            <volist name="sql" id="list">
+                                <option value="{$list['inst_id']}" >{$list['inst_name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <p class="notic">上级机构</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>机构地址</label>
+                </dt>
+                <dd class="opt">
+                    <select onblur="get_city(this)" id="province" name="province"  title="请选择所在省份">
+                        <option value="">选择省份</option>
+                        <volist name="province" id="vo">
+                            <option value="{$vo.id}" >{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <select onblur="get_area(this)" id="city" name="city" title="请选择所在城市">
+                        <option value="">选择城市</option>
+                        <volist name="city" id="vo">
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        </volist>
+                    </select>
+                    <select id="district" name="area" title="请选择所在区县">
+                        <option value="">选择区域</option>
+                        <volist name="area" id="vo">
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        </volist>
+                    </select>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label >所属管理</label>
+                </dt>
+                <dd class="opt">
+                    <div>
+                        <select name="admin_id" class="input-sm" class="form-control">
+                            <option value="">选择管理</option>
+                            <volist name="admin" id="list">
+                                <option value="{$list['admin_id']}" >{$list['user_name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <p class="notic">所属管理</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label >联系人</label>
+                </dt>
+                <dd class="opt">
+                    <input id="contact_user"  name="contact_user" value="" class="input-txt" type="text">
+                    <p class="notic">联系人</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label >联系电话</label>
+                </dt>
+                <dd class="opt">
+                    <input id="contact_phone"  name="contact_phone" value="" class="input-txt" type="text">
+                    <p class="notic">联系电话</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label class="qq">联系地址</label>
+                </dt>
+                <dd class="opt">
+                    <input id="contact_addr"   name="contact_addr" value="" class="input-txt" type="text">
+                    <span class="err"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label class="qq">开通状态</label>
+                </dt>
+                <dd class="opt">
+                    <input value="1" name="open_status" id="open_status1" type="radio" >
+                    <label for="open_status1">开通</label>
+                    <input value="0" name="open_status" id="open_status0" type="radio" >
+                    <label for="open_status0">未开通</label>
+                </dd>
+            </dl>
+            <div class="bot"><a  onclick="checkUserUpdate();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script>
+    function checkUserUpdate(){
+        var inst_name = $('input[name="inst_name"]').val();
+        var contact_user = $('input[name="contact_user"]').val();
+        var contact_phone = $('input[name="contact_phone"]').val();
+
+
+        var error ='';
+        if(inst_name == ''){
+            error += "机构名称不能为空\n";
+        }
+        if(contact_user == ''){
+            error += "联系人不能为空\n";
+        }
+        if(contact_phone == '' ){
+            error += "联系人手机号不能为空\n";
+        }
+
+
+        if(error){
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+        $('#handleForm').submit();
+    }
+</script>
+</body>
+</html>

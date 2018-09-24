@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="10f56790-1f3a-4658-a606-978e49f0c603" name="zhaoche" url="http://112.74.166.57">
+        <fileTransfer host="112.74.166.57" port="22" rootFolder="/var/www/html/TPshop" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

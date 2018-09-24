@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>移动端使用localResizeIMG4压缩图片</title>
+    <script src="__PUBLIC__/js/localResizeIMG/dist/lrz.bundle.js"></script>
+    <script src="__PUBLIC__/js/localResizeIMG/dist/zepto.min.js"></script>
+</head>
+
+<body>
+
+<div style="margin-top: 10%;text-align: center" >
+    <span  style="font-size: 40px;">请依次上传证件照片 </span>
+</div>
+
+<if condition="$cate['is_identity'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传身份证图片：&nbsp&nbsp&nbsp </span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_identity" id="file">
+        <input type="hidden"   value="{$cate['goods_id']}" name="goods_id" id="goods_id">
+    </div>
+</if>
+
+
+<if condition="$cate['is_license'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传驾驶证图片：</span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_license" id="head">
+    </div>
+</if>
+
+
+<if condition="$cate['is_credit'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传银行卡图片：</span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_credit" id="head_back">
+    </div>
+</if>
+
+<if condition="$cate['is_security'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传社保（营业执照）：</span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_security" id="credit">
+    </div>
+</if>
+
+<if condition="$cate['is_bankflow'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传银行流水：</span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_bankflow" id="credit_back">
+    </div>
+</if>
+
+<if condition="$cate['is_ownership'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传房产证：</span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_ownership" id="credit_ownership">
+    </div>
+</if>
+
+<if condition="$cate['is_commencial'] eq 1">
+    <div  style="text-align: center;margin-top: 10%">
+        <span  style="font-size: 35px"> 请上传商业保险单：</span>
+        <input type="file" capture="camera"  style="width: 30%;height: 100px"  accept="image/*" name="is_commencial" id="credit_commencial">
+    </div>
+</if>
+
+<div style="text-align: center;margin-top: 10%">
+    <div id="DivUp" style="display: none">
+        <input type="submit" data-inline="true"  onclick="uploadclick()"  style="text-align: center;width: 30% ;height: 80px"  id="BtnUp" value="上传成功" data-mini="true" />
+    </div>
+</div>
+
+
+
+<!--<script type="text/javascript" src="__PUBLIC__/static/js/layer/layer.js"></script>-->
+<script type="text/javascript">
+
+    function  uploadclick(){
+        location.href = '/index.php?mobile/index/index.html';
+    }
+
+    $(function(){
+//        code   用数字标识   1：表示上传的是身份证    2：表示上传的是驾驶证   3：表示上传的是银行卡   4：表示上传的是社保（营业执照）   5：  表示上传的是银行流水
+//                            6：表示上传的是房产证    7：表示上传的是商业保险单
+//        身份证
+        var goods=$("input[name=goods_id]").val();
+        $('input[name=is_identity]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64, code : 1,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert('身份证上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+        });
+
+//      驾驶证
+        $('input[name=is_license]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64,code : 2,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert('驾驶证上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+        });
+
+//        银行卡
+        $('input[name=is_credit]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64,code : 3,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert('银行卡上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+            return document.getElementById("DivUp").style.display = "block",
+                !0
+        });
+
+//        社保（营业执照）
+        $('input[name=is_security]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64,code :4,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert(' 社保（营业执照）上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+            return document.getElementById("DivUp").style.display = "block",
+                !0
+        });
+
+//        银行流水
+        $('input[name=is_bankflow]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64,code :5,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert(' 银行卡正面照上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+        });
+
+//        房产证
+        $('input[name=is_ownership]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64,code :6,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert(' 房产证图片上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+
+        });
+
+
+        //商业保险单
+        $('input[name=is_commencial]').on('change', function(){
+            lrz(this.files[0], {width: 640})
+                .then(function (rst) {
+//                    console.log(rst);
+                    $.ajax({
+                        url: '/mobile/User/ajax_submit',
+                        type: 'post',
+                        data: {img: rst.base64,code :7,goods:goods},
+                        dataType: 'json',
+                        timeout: 200000,
+                        success: function (response) {
+                            if (response.ecd == '0') {
+                                alert('成功');
+                                return true;
+                            } else {
+//                                 layer.alert('上传成功');
+                                return alert(' 商业保险单上传成功');
+                            }
+                        },
+
+                        error: function (jqXHR, textStatus, errorThrown) {
+
+                            if (textStatus == 'timeout') {
+                                a_info_alert('请求超时');
+
+                                return false;
+                            }
+
+//                            alert(jqXHR.responseText);
+                        }
+                    });
+
+                })
+                .catch(function (err) {
+
+                })
+                .always(function () {
+
+                });
+        });
+    });
+</script>
+</body>

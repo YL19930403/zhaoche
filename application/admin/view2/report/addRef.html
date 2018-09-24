@@ -1,0 +1,76 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>推荐人管理 - 编辑推荐人</h3>
+                <h5>网站系统推荐人管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleForm"  method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label >所属机构</label>
+                </dt>
+                <dd class="opt">
+                    <div>
+                        <select   name="inst_id" class="input-sm" class="form-control" title="请选择所属机构">
+                            <option value="">所属机构</option>
+                            <volist name="sql" id="list">
+                                <option value="{$list['inst_id']}" >{$list['inst_name']}</option>
+                            </volist>
+                        </select>
+                    </div>
+                    <p class="notic">所属机构</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label >用户id</label>
+                </dt>
+                <dd class="opt">
+                    <input id="user_id"  name="user_id" value="" class="input-txt" type="text">
+                    <p class="notic">用户id</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label class="qq">开通状态</label>
+                </dt>
+                <dd class="opt">
+                    <input value="1" name="open_status" id="open_status1" type="radio" >
+                    <label for="open_status1">开通</label>
+                    <input value="0" name="open_status" id="open_status0" type="radio" >
+                    <label for="open_status0">未开通</label>
+                </dd>
+            </dl>
+            <div class="bot"><a  onclick="checkUserUpdate();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script>
+    function checkUserUpdate(){
+        var inst_id = $('input[name="inst_id"]').val();
+
+
+        var error ='';
+        if(inst_id == ''){
+            error += "机构不能为空\n";
+        }
+
+
+        if(error){
+            layer.alert(error, {icon: 2});  //alert(error);
+            return false;
+        }
+        $('#handleForm').submit();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<include file="public/layout" />
+ 
+<style type="text/css">
+html, body {
+	overflow: visible;
+}
+</style>  
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="{:U('Admin/Order/refund_order_list')}" title="返回资料审核单"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>资料审核详情</h3>
+        <h5>用户资料审核单详情</h5>
+      </div>
+    </div>
+  </div>
+  <form class="form-horizontal" method="post" id="refund_form"  name="refund_form" action="{:U('Admin/Order/refund_order')}">
+   <div class="ncap-order-style">
+    <div class="ncap-order-details">
+        <div class="tabs-panels">
+        <div class="addr-note">
+            <h4>用户信息</h4>
+          <dl>
+            <dt>用户昵称：</dt>
+            <dd>{$image['nickname']}</dd>
+            <dt>联系方式：</dt>
+            <dd>{$image['mobile']}</dd>
+          </dl>
+        </div>
+            <if condition="$image['identity'] neq null">
+                <div class="addr-note">
+                    <h4>身份证号</h4>
+                    <img width="400" height="400" src="<?php echo $image['identity']; ?>">
+                </div>
+            </if>
+            <if condition="$image['license'] neq null">
+                <div class="addr-note">
+                    <h4>驾驶证</h4>
+                    <img width="400" height="400" src="<?php echo $image['license']; ?>">
+                </div>
+            </if>
+            <if condition="$image['credit'] neq null">
+                <div class="addr-note">
+                    <h4>银行卡</h4>
+                    <img width="400" height="400" src="<?php echo $image['credit']; ?>">
+                </div>
+            </if>
+            <if condition="$image['security'] neq null">
+                <div class="addr-note">
+                    <h4>社保卡或营业执照</h4>
+                    <img width="400" height="400" src="<?php echo $image['security'];?>">
+                </div>
+            </if>
+            <if condition="$image['bankflow'] neq null">
+                <div class="addr-note">
+                    <h4>银行流水</h4>
+                    <img width="400" height="400" src="<?php echo $image['bankflow']; ?>">
+                </div>
+            </if>
+            <if condition="$image['ownership'] neq null">
+                <div class="addr-note">
+                    <h4>房产证</h4>
+                    <img width="400" height="400" src="<?php echo $image['ownership'];?>">
+                </div>
+            </if>
+            <div class="goods-info">
+                <h4>商品信息</h4>
+                <table>
+                    <thead>
+                    <tr>
+                        <th >商品编号</th>
+                        <th colspan="2">商品</th>
+                        <th>单品价格</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="w60">{$image['goods_id']}</td>
+                            <td class="w30"><div class="goods-thumb"><img alt="" src="{$image['goods_name']}" /> </a></div></td>
+                            <td style="text-align: left;">{$image['goods_name']}</a><br/></td>
+                            <td class="w100">{$image['shop_price']}</td>
+                        </tr>
+                </table>
+            </div>
+            <div class="contact-info">
+                <h3>审核处理</h3>
+                <if condition="$image['view'] eq  0">
+                    <dl class="row">
+                        <dd class="opt">
+                            <label><input type="radio" name="view" value="1" <if condition="$image['view'] eq 1">checked="checked"</if>>审核通过</label>
+                            <label><input type="radio" name="view" value="2" <if condition="$image['view'] eq 2">checked="checked"</if>>审核未通过</label>
+                            <label><input type="radio" name="view" value="3" <if condition="$image['view'] eq 3">checked="checked"</if>>拒绝通过</label>
+                        </dd>
+                    </dl>
+                    <dl class="row">
+                        <dt  class="tit"></dt>
+                        <dd class="opt" style="margin-left:10px">
+                            <input type="hidden" name="user_id" value="{$image['user_id']}">
+                            <input type="hidden" name="good_id" value="{$image['good_id']}">
+                            <input type="hidden" name="id" value="{$image['id']}">
+                            <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+                        </dd>
+                    </dl>
+                    <else/>
+                    <dl class="row">
+                        <dd class="opt">
+                            <label><input type="radio" disabled  name="view" value="1" <if condition="$image['view'] eq 1">checked="checked"</if>>审核通过</label>
+                            <label><input type="radio" disabled  name="view" value="2" <if condition="$image['view'] eq 2">checked="checked"</if>>审核未通过</label>
+                            <label><input type="radio" disabled name="view" value="3" <if condition="$image['view'] eq 3">checked="checked"</if>>拒绝通过</label>
+                        </dd>
+                    </dl>
+                </if>
+            </div>
+        </div>
+    </div>
+   </div>
+  </form>
+</div>
+<script type="text/javascript">
+function refundOrder(){
+	var admin_note = $('#admin_note').val();
+	if(admin_note == ''){
+		layer.alert('请填写备注', {icon: 2});
+		return false;
+	}
+	$('#refund_form').submit();
+}
+</script>
+</body>
+</html>

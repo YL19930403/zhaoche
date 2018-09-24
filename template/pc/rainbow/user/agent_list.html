@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>代理列表-{$tpshop_config['shop_info_store_title']}</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/tpshop.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/myaccount.css" />
+    <script src="__STATIC__/js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+</head>
+<body class="bg-f5">
+<include file="user/header"/>
+<div class="home-index-middle">
+    <div class="w1224">
+        <div class="g-crumbs">
+            <a href="{:U('Home/User/index')}">我的商城</a>
+            <i class="litt-xyb"></i>
+            <span>代理列表</span>
+        </div>
+        <div class="home-main">
+            <include file="user/menu_agent"/>
+            <div class="ri-menu fr">
+                <div class="menumain p">
+                    <div class="time-sala timsearch">
+                        <ul>
+                            <li class="<if condition='$Request.param.type eq null OR $Request.param.type eq 0'>red<else/>mal-l</if>">代理列表</li>
+                        </ul>
+
+                        <div class="time-qjc" style="display: block;">
+
+                        </div>
+
+                    </div>
+                    <div class="he"></div>
+                    <div class="card-list accbala bor-acc">
+                        <ul>
+                            <li><a href="javascript:void(0);">ID</a></li>
+                            <li><a href="javascript:void(0);">用户昵称</a></li>
+                            <li><a href="javascript:void(0);">手机号</a></li>
+                            <li><a href="javascript:void(0);">所属区域</a></li>
+                            <li><a href="javascript:void(0);">注册时间</a></li>
+                        </ul>
+                    </div>
+                    <empty name="agent_list">
+                        <p class="ncyekjl">--暂无记录--</p>
+                    </empty>
+
+                    <volist name="agent_list" id="list">
+                        <div class="card-list c_contan accbala-list">
+                            <ul>
+                                <li><a href="javascript:void(0);">{$list['user_id']|default='无'}</a></li>
+                                <li><a href="javascript:void(0);">{$list['nickname']|default='无'}</a></li>
+                                <li><a href="javascript:void(0);">{$list['mobile']|default='无'}</a></li>
+                                <li><a href="javascript:void(0);">{$list['name']|default='无'}</a></li>
+                                <li><a href="javascript:void(0);">{$list['reg_time']|date='Y-m-d H:i',###}</a></li>
+                            </ul>
+                        </div>
+
+                    </volist>
+                    <div class="operating fixed" id="bottom">
+                        <div class="fn_page clearfix">
+                            {$page}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer-s-->
+<div class="footer p">
+    <include file="public/footer" />
+</div>
+<!--footer-e-->
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

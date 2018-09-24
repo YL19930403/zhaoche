@@ -1,0 +1,91 @@
+<table>
+    <tbody>
+    <volist name="info" id="v">
+        <tr>
+            <td class="sign" axis="col6">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+            </td>
+            <td class="handle" >
+                <div style="text-align:left;   min-width:50px !important; max-width:inherit !important;">
+                  <span class="btn"><em><i class="fa fa-cog"></i>设置<i class="arrow"></i></em>
+                  <ul>
+                    <li><a href="{:U('Admin/Goods/addEditinfo',array('id'=>$v['id']))}">编辑商品首付</a></li>
+                      <li><a href="{:U('Admin/Goods/delInfo',array('id'=>$v['id']))}">删除商品首付</a></li>
+                  </ul>
+                  </span>
+                </div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="width: 50px;">{$v.id}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: left; width: 150px;">{$v.goods_name}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.radion}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.first_payment}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.purchase_tax}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.carriage_fee}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.security_deposit}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.GPS}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 100px;">{$v.month_payment}</div>
+            </td>
+            <td align="" class="" style="width: 100%;">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+
+    /*
+     * 清除静态页面缓存
+     */
+    function ClearGoodsHtml(goods_id)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/System/ClearGoodsHtml')}",
+            data:{goods_id:goods_id},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data.msg, {icon: 2});
+            }
+        });
+    }
+    /*
+     * 清除商品缩列图缓存
+     */
+    function ClearGoodsThumb(goods_id)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/System/ClearGoodsThumb')}",
+            data:{goods_id:goods_id},
+            dataType:'json',
+            success:function(data){
+                layer.alert(data.msg, {icon: 2});
+            }
+        });
+    }
+
+</script>

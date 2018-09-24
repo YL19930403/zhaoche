@@ -1,0 +1,337 @@
+<include file="public/layout" />
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+
+
+<style type="text/css">
+    td{height:40px;line-height:40px; padding-left:20px;}
+    .span_1{
+        float:left;
+        margin-left:0px;
+        height:130px;
+        line-height:130px;
+    }
+    .span_1 ul{list-style:none;padding:0px;}
+    .span_1 ul li{
+        border:1px solid #CCC;
+        height:40px;
+        padding:0px 10px;
+        margin-left:-1px;
+        margin-top:-1px;
+        line-height:40px;
+    }
+
+</style>
+
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>认证管理 - 认证信息</h3>
+                <h5>网站系统会员认证管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="user_form" method="post">
+
+
+        <!--效果html开始-->
+        <!--图库弹出层 开始-->
+        <!--<div class="mskeLayBg"></div>-->
+        <!--<div class="mskelayBox">-->
+            <!--<div class="mske_html">-->
+            <!--</div>-->
+            <!--<img class="mskeClaose" src="__PUBLIC__/static/lib/ScaleImage/images/mke_close.png" width="27" height="27" />-->
+        <!--</div>-->
+        <!--&lt;!&ndash;图库弹出层 结束&ndash;&gt;-->
+
+
+
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>驾驶证：</label>
+                </dt>
+                <dd class="opt"  >
+                    <img   id="img11" src="{$idata.license}"  />
+                </dd>
+            </dl>
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>身份证正面照：</label>
+                </dt>
+                <dd class="opt">
+                    <img   id="img12" src="{$idata.identi_front}"   />
+                </dd>
+            </dl>
+
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>身份证反面照：</label>
+                </dt>
+                <dd class="opt">
+                    <img   id="img13" src="{$idata.identi_back}"     />
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>银行卡正面照：</label>
+                </dt>
+                <dd class="opt">
+                    <img   id="img14" src="{$idata.credit_back}"   />
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>银行卡反面照：</label>
+                </dt>
+                <dd class="opt">
+                    <img   id="img15" src="{$idata.credit_back}"      />
+                </dd>
+            </dl>
+
+            <input  hidden="hidden" name="user_id" value="{$idata['user_id']}">
+            <div class="bot"><a href="JavaScript:void(0);" onclick="AgreeCheck()" class="ncap-btn-big ncap-btn-green">审核通过</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="JavaScript:void(0);" onclick="RefuseCheck()" class="ncap-btn-big ncap-btn-green">拒绝通过</a></div>
+
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+//    var  record = false ;
+
+
+    function  AgreeCheck(){
+         var  uid =   $('input[name=user_id]').val() ;
+        layer.confirm('您确定要通过审核？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+//            layer.close();
+            layer.closeAll() ;
+//            layer.msg('的确很重要', {icon: 1});
+            $.ajax({
+                dataType:'json' ,
+                url:'/Admin/User/agreeCheck',
+                data:{'id' : uid},
+                type:'get',
+                success:function (data) {
+                    if(data.status == 0){
+                        layer.close();
+//                        opener.location.reload() ;
+//                        layer.alert(data.msg, {icon: 6});
+//                        location.reload() ;
+
+                        window.location.href = '/Admin/User/memberAuth' ;
+                    }else if (data.status == 1){
+                        layer.alert(data.msg, {icon: 5});
+                    }else{
+                        layer.alert(data.msg, {icon: 5});
+                    }
+                }
+            });
+        }, function(){
+               //取消
+        });
+    }
+
+
+    function  RefuseCheck(){
+        var  uid =   $('input[name=user_id]').val() ;
+        layer.confirm('您确定要拒绝审核？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+//            layer.close();
+            layer.closeAll() ;
+//            layer.msg('的确很重要', {icon: 1});
+            $.ajax({
+                dataType:'json' ,
+                url:'/Admin/User/refuseCheck',
+                data:{'id' : uid},
+                type:'get',
+                success:function (data) {
+                    if(data.status == 0){
+                        layer.close();
+//                        opener.location.reload() ;
+//                        layer.alert(data.msg, {icon: 6});
+//                        location.reload() ;
+
+                        window.location.href = '/Admin/User/memberAuth' ;
+                    }else if (data.status == 1){
+                        layer.alert(data.msg, {icon: 5});
+                    }else{
+                        layer.alert(data.msg, {icon: 5});
+                    }
+                }
+            });
+        }, function(){
+            //取消
+        });
+    }
+
+
+//    function  imgClic(obj){
+//         var img_id = obj.id ;
+//        //调用我写好的方法，只需要传入一个id
+//        ChangeImg(img_id) ;
+//    }
+
+//    function  ChangeImg(img_id){
+//
+//        var  width =  $("#"+img_id).width() ;
+//        var  height =  $("#"+img_id).height() ;
+//
+//        var b_width = $("#"+img_id).width() * 1.5 ;
+//        var b_height = $("#"+img_id).height() * 1.5 ;
+//
+//
+//
+//        if(b_width > width){
+//
+//                $("#"+img_id).attr('width', b_width) ;
+//
+//
+//            b_width = width ;
+//            record = true ;
+//        }else{
+//
+//                $("#"+img_id).attr('width', width) ;
+//                $("#"+img_id).attr('height', height) ;
+//
+//            b_width = width * 1.5 ;
+//            record = false ;
+//        }
+//    }
+
+
+
+    $(function () {
+        //先获取到原图片宽高
+         var width_1 =  $('#img11').width()   ;
+         var height_1 =  $('#img11').height()  ;
+         //设置到图片属性中
+        var b_width_1 = $('#img11').width() * 0.5 ;
+        var b_height_1 = $('#img11').height() * 0.5 ;
+        $('#img11').attr('width', b_width_1) ;
+        $('#img11').attr('height', b_height_1) ;
+
+
+        var width_2 =  $('#img12').width()   ;
+        var height_2 =  $('#img12').height()  ;
+        //设置到图片属性中
+        var b_width_2 = $('#img12').width() * 0.5 ;
+        var b_height_2 = $('#img12').height() * 0.5 ;
+        $('#img12').attr('width', b_width_2) ;
+        $('#img12').attr('height', b_height_2) ;
+
+        var width_3 =  $('#img13').width()   ;
+        var height_3 =  $('#img13').height()  ;
+        //设置到图片属性中
+        var b_width_3 = $('#img13').width() * 0.5 ;
+        var b_height_3 = $('#img13').height() * 0.5 ;
+        $('#img13').attr('width', b_width_3) ;
+        $('#img13').attr('height', b_height_3) ;
+
+
+        var width_4 =  $('#img14').width()   ;
+        var height_4 =  $('#img14').height()  ;
+        //设置到图片属性中
+        var b_width_4 = $('#img14').width() * 0.5 ;
+        var b_height_4 = $('#img14').height() * 0.5 ;
+        $('#img14').attr('width', b_width_4) ;
+        $('#img14').attr('height', b_height_4) ;
+
+        var width_5 =  $('#img15').width()   ;
+        var height_5 =  $('#img15').height()  ;
+        //设置到图片属性中
+        var b_width_5 = $('#img15').width() * 0.5 ;
+        var b_height_5 = $('#img15').height() * 0.5 ;
+        $('#img15').attr('width', b_width_5) ;
+        $('#img15').attr('height', b_height_5) ;
+
+
+
+
+//        $('#img11').click(function () {
+//            //点击的时候获取到当前的宽高，然后再将其放大
+//                    if(b_width > width){
+//                        $('#img11').attr('width', width) ;
+//                        $('#img11').attr('height', height) ;
+//                        b_width = width * 0.5    ;
+//                    }else{
+//                        $('#img11').attr('width', b_width) ;
+//                        $('#img11').attr('height', b_height) ;
+//                        b_width = width   ;
+//                    }
+//        });
+//
+//        $('#img12').click(function () {
+//            //点击的时候获取到当前的宽高，然后再将其放大
+//            if(b_width < width){
+//                $('#img12').attr('width', b_width) ;
+//                $('#img12').attr('height', b_height) ;
+//                b_width = width ;
+//            }else{
+//                $('#img12').attr('width', width) ;
+//                $('#img12').attr('height', height) ;
+//                b_width = width * 0.5 ;
+//            }
+//        });
+//
+//        $('#img13').click(function () {
+//            //点击的时候获取到当前的宽高，然后再将其放大
+//            if(b_width < width){
+//                $('#img13').attr('width', b_width) ;
+//                $('#img13').attr('height', b_height) ;
+//                b_width = width ;
+//            }else{
+//                $('#img13').attr('width', width) ;
+//                $('#img13').attr('height', height) ;
+//                b_width = width * 0.5 ;
+//            }
+//        });
+//
+//        $('#img14').click(function () {
+//            //点击的时候获取到当前的宽高，然后再将其放大
+//            if(b_width < width){
+//                $('#img14').attr('width', b_width) ;
+//                $('#img14').attr('height', b_height) ;
+//                b_width = width ;
+//            }else{
+//                $('#img14').attr('width', width) ;
+//                $('#img14').attr('height', height) ;
+//                b_width = width * 0.5 ;
+//            }
+//        });
+//
+//        $('#img15').click(function () {
+//            //点击的时候获取到当前的宽高，然后再将其放大
+//            if(b_width < width){
+//                $('#img15').attr('width', b_width) ;
+//                $('#img15').attr('height', b_height) ;
+//                b_width = width ;
+//            }else{
+//                $('#img15').attr('width', width) ;
+//                $('#img15').attr('height', height) ;
+//                b_width = width * 0.5 ;
+//            }
+//        });
+
+    });
+</script>
+</body>
+</html>

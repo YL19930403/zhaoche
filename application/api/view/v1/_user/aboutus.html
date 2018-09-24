@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <title>关于爱车送</title>
+    <style>
+        /*-----css Reset end-----*/
+        body,h1,h2,h3,h4,h5,h6,p,ul,ol,form{
+            margin:0;
+            padding:0px;
+        }
+        body{
+            font-family: "Arial";
+            font-size: 100%;
+            margin: 0px auto;
+            display: none;
+        }
+        #wrapper{
+            width:320px;
+            margin: 0px auto;
+            position: relative;
+        }
+        /*-----css content start-----*/
+
+        .nav img{
+            width:30%;
+            display: block;
+            margin-top: 30px;
+            margin-left: auto ;
+            margin-right: auto;
+
+        }
+
+        .version p{
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            font-style: normal;
+            color: rgba(150,151,152,0.8);
+        }
+
+        .descript p{
+	   width:80%;
+            margin-top: 20px;
+            margin-left: 10%;
+            margin-right: 10%;
+	  color: rgba(150,151,152,0.8);
+        }
+
+        .QRcode img{
+            display: block;
+            margin-left: auto ;
+            margin-right: auto;
+            /*margin-top: 20px;*/
+            width: 60%;
+        }
+
+        .QRdesc p{
+            text-align: center;
+            font-size: 15px;
+            font-style: normal;
+            color: rgba(122,122,123,0.8);
+        }
+
+        .QRkefu p{
+            margin-top: 10px;
+            margin-left: 10%;
+            margin-right: 10%;
+            font-size: 15px;
+            font-style: normal;
+            color: rgba(122,122,123,0.8);
+        }
+
+        .QRAddress p{
+	  width:80% ;
+            margin-left: 10%;
+            margin-right: 10%;
+            font-size: 15px;
+            font-style: normal;
+            color: rgba(122,122,123,0.8);
+        }
+
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div class="nav"><img src="/public/images/u17.png"/></div>
+    <div class="version"><p>当前：V1.1.1</p></div>
+
+    <div id="container">
+        <div class="descript"><p>
+            深圳找车网科技有限公司成立于2014年，以新车、新能源车销售为主业，带动智慧车联网系统、运输信息化系统的推广应用，逐步完善汽车后时代的各项服务。
+找车网主要联合汽车生产厂商、全国各地4S店做新车、新能源车销售模式的培训和推广，传授新车询价报价方法、贷款按揭流程、乘用车运输与配送、各环节风险把控等知识，同时提供车源调配、贷款按揭、车辆上牌等全程服务，辅助你快速学会汽车销售，扩大就业、提升服务质量。
+找车网“爱车送”项目 采取合伙人运营制度，本着共建共享、诚实守信、合作共赢的原则，在这里，每个人都是独立自主的汽车经销商。
+
+        </p></div>
+    </div>
+
+
+
+    <div class="QRcode"><img src="/public/images/gongzhonghao.jpg"/></div>
+    <div class="QRdesc"><p>微信公众号</p></div> 
+</div>
+
+
+</div>
+<script>
+    (function() {
+        var scale = 1,
+            $wrapper = document.getElementById('wrapper'),
+            $body = document.getElementsByTagName('body')[0],
+            windowWidth = document.documentElement && document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+            windowHeight = document.documentElement && document.documentElement.clientHeight || documentElement.body.clientHeight || window.innerHeight,
+            deviceAgent = navigator.userAgent.toLowerCase(),
+            setScale = function(scales) {
+                if ($wrapper.style.zoom === undefined) {
+                    $wrapper.style.margin = '0px';
+                    $wrapper.style.transformOrigin = 'top left';
+                    $wrapper.style.transform = 'scale(' + scales + ')';
+                    $wrapper.style.MozTransformOrigin = 'top left';
+                    $wrapper.style.MozTransform = 'scale(' + scales + ')';
+                } else {
+                    $wrapper.style.zoom = scales;
+                }
+                $body.style.display = 'block';
+            }
+
+        try {
+            if (deviceAgent.match(/(iphone|ipod|android|windows\s*phone|symbianos)/)) {
+                if (window.localStorage && window.localStorage.getItem('scale_jumei')) {
+                    scale = window.localStorage.getItem('scale_jumei');
+                } else {
+                    scale = parseFloat(windowWidth / 320);
+                    if (windowHeight > windowWidth) {
+                        window.localStorage && window.localStorage.setItem('scale_jumei', scale);
+                    }
+                }
+                //微信2.3版本的处理(2.3版本有一个bug就是获取宽度不准确)
+                if (deviceAgent.match(/android\s*2.3/) && deviceAgent.match(/micromessenger/)) {
+                    scale = 1;
+                }
+                if ($wrapper) {
+                    setScale(scale);
+                }
+            }
+        } catch (e) {
+            scale = parseFloat(windowWidth / 320);
+            if ($wrapper) {
+                setScale(scale);
+            }
+        }
+    })();
+</script>
+</body>
+</html>

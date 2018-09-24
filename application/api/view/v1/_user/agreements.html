@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+ <html>
+     <head>
+             <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+             <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+             <meta name="format-detection" content="telephone=no"/>
+             <title>用户协议</title>
+             <style>
+                 /*-----css Reset end-----*/
+                 body,h1,h2,h3,h4,h5,h6,p,ul,ol,form{
+                         margin:0;
+                         padding:0px;
+                     }
+                 body{
+                                        font-family: "Arial";
+                                        font-size: 100%;
+                                        margin: 0px auto;
+                                        display: none;
+                                    }
+                 #wrapper{
+                                        width:300px;
+                                        margin: 0px auto;
+                                        position: relative;
+                                    }
+                 /*-----css content start-----*/
+
+                 .nav img{
+                                        width:100%;
+                                        display: block;
+                                    }
+
+             </style>
+         </head>
+     <body>
+         <div id="wrapper">
+                 <!--<div class="nav"><img src="http://p1.jmstatic.com/banner/75/mobile_app/24326_0.jpg"/></div>-->
+                 <div id="container">
+                     <div id="user">{$content}<span id="userinfo"></span></div>
+                 </div>
+             </div>
+         <script>
+                 (function() {
+                         var scale = 1,
+                                     $wrapper = document.getElementById('wrapper'),
+                                 $body = document.getElementsByTagName('body')[0],
+                                     windowWidth = document.documentElement && document.documentElement.clientWidth || document.body.clientWidth || window.innerWidth,
+                                     windowHeight = document.documentElement && document.documentElement.clientHeight || documentElement.body.clientHeight || window.innerHeight,
+                                     deviceAgent = navigator.userAgent.toLowerCase(),
+                                     setScale = function(scales) {
+                                         if ($wrapper.style.zoom === undefined) {
+                                                 $wrapper.style.margin = '0px';
+                                                 $wrapper.style.transformOrigin = 'top left';
+                                                 $wrapper.style.transform = 'scale(' + scales + ')';
+                                                 $wrapper.style.MozTransformOrigin = 'top left';
+                                                 $wrapper.style.MozTransform = 'scale(' + scales + ')';
+                                             } else {
+                                                 $wrapper.style.zoom = scales;
+                                             }
+                                         $body.style.display = 'block';
+                                     }
+
+                         try {
+                                 if (deviceAgent.match(/(iphone|ipod|android|windows\s*phone|symbianos)/)) {
+                                         if (window.localStorage && window.localStorage.getItem('scale_jumei')) {
+                                                 scale = window.localStorage.getItem('scale_jumei');
+                                             } else {
+                                                 scale = parseFloat(windowWidth / 320);
+                                                 if (windowHeight > windowWidth) {
+                                                         window.localStorage && window.localStorage.setItem('scale_jumei', scale);
+                                                     }
+                                             }
+                                         //微信2.3版本的处理(2.3版本有一个bug就是获取宽度不准确)
+                                         if (deviceAgent.match(/android\s*2.3/) && deviceAgent.match(/micromessenger/)) {
+                                                 scale = 1;
+                                             }
+                                         if ($wrapper) {
+                                                 setScale(scale);
+                                             }
+                                     }
+                             } catch (e) {
+                                 scale = parseFloat(windowWidth / 320);
+                                 if ($wrapper) {
+                                         setScale(scale);
+                                     }
+                             }
+                     })();
+             </script>
+     </body>
+ </html>

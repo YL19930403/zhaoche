@@ -1,0 +1,109 @@
+<include file="public/layout" />
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<!-- 百度上传插件 地址
+http://fex.baidu.com/webuploader/
+-->
+<style type="text/css">
+    html, body {
+        overflow: visible;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>协议管理 - 新增协议</h3>
+                <h5>网站协议与管理</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal"  id="add_post" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>协议标题</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$agree.title}" name="title" class="input-txt">
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>显示</label>
+                </dt>
+                <dd class="opt">
+                    <div class="onoff">
+                        <label for="article_show1" class="cb-enable <if condition="$agree[is_delete] eq 1">selected</if>">是</label>
+                        <label for="article_show0" class="cb-disable <if condition="$agree[is_delete] eq 0">selected</if>">否</label>
+                        <input id="article_show1" name="is_open" value="1" type="radio" <if condition="$agree[is_delete] eq 1"> checked="checked"</if>>
+                        <input id="article_show0" name="is_open" value="0" type="radio" <if condition="$agree[is_delete] eq 0"> checked="checked"</if>>
+                    </div>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>协议内容</label>
+                </dt>
+                <dd class="opt">
+            <textarea class="span12 ckeditor" id="post_content" name="content" title="">
+                {$agree.content}
+            </textarea>
+                    <span class="err"></span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>添加时间</label>
+                </dt>
+                <dd class="opt">
+                       {$agree.create_time|date="Y-m-d H:i:s",###}
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onClick="checkForm()" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        $('#publish_time').layDate();
+    });
+
+    var url="{:url('Ueditor/index',array('savePath'=>'article'))}";
+    var ue = UE.getEditor('post_content',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "80%", //初化宽度
+        initialFrameHeight: 300, //初化高度
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+    function checkForm(){
+        if($('input[name="title"]').val() == ''){
+            layer.alert("请填写文章标题！",{icon:2});
+            return false;
+        }
+        if($('#cat_id').val() == '' || $('#cat_id').val() == 0){
+            layer.alert("请选择文章类别！",{icon:2});
+            return false;
+        }
+        $('#add_post').submit();
+    }
+
+</script>
+</body>
+</html>

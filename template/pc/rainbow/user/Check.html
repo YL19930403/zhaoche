@@ -1,0 +1,469 @@
+<include file="/public/layout" />
+
+<script src="__PUBLIC__/js/pc_common.js"></script>
+
+<!--物流配置 css -start-->
+<style>
+    ul.group-list {
+        width: 96%;min-width: 1000px; margin: auto 5px;list-style: disc outside none;
+    }
+    ul.group-list li {
+        white-space: nowrap;float: left;
+        width: 150px; height: 25px;
+        padding: 3px 5px;list-style-type: none;
+        list-style-position: outside;border: 0px;margin: 0px;
+    }
+    .row .table-bordered td .btn,.row .table-bordered td img{
+        vertical-align: middle;
+    }
+    .row .table-bordered td{
+        padding: 8px;
+        line-height: 1.42857143;
+    }
+    .table-bordered{
+        width: 100%
+    }
+    .table-bordered tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .btn-success {
+        color: #fff;background-color: #449d44;border-color: #398439 solid 1px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .col-xs-8 {
+        width: 66.66666667%;
+    }
+    .col-xs-4 {
+        width: 33.33333333%;
+    }
+    .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+        float: left;
+    }
+    .row .tab-pane h4{
+        padding: 10px 0;
+    }
+    .row .tab-pane h4 input{
+        vertical-align: middle;
+    }
+    .table-striped>tbody>tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+    .ncap-form-default .title{
+        border-bottom: 0 ;
+    }
+
+    .tab_div_1{
+        /*border: 1px solid red;*/
+        text-align: center;/*(让div中的内容居中)*/
+        margin-left: 30%;
+    }
+
+    .ncap-form-default dl.row, .ncap-form-all dd.opt{
+        /*border-color: #F0F0F0;*/
+        border: none;
+    }
+    .ncap-form-default dl.row:hover, .ncap-form-all dd.opt:hover{
+        border: none;box-shadow: inherit;
+    }
+    .addprine{display: inline; }
+    .alisth{margin-top: 10px}
+    .p_plus strong{cursor: pointer;margin-left: 4px;}
+</style>
+<!--物流配置 css -end-->
+<!--以下是在线编辑器 代码 -->
+<!--<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>-->
+<!--<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>-->
+<!--<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>-->
+<!--以上是在线编辑器 代码  end-->
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>请务必正确按照正确方式添加图片</li>
+        </ul>
+    </div>
+    <!--表单数据-->
+    <form method="post"  action="{:U('User/aticleHandle')}" id="addEditGoodsForm">
+        <input type="hidden" value="{$Request.param.is_distribut}" name="is_distribut" class="input-txt"/>
+        <input type="hidden" value="{$good_id}" name="good_id" class="input-txt"/>
+        <!--通用信息-->
+        <!--身份证上传-->
+        <if condition="$cer['is_identity'] eq 1">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>身份证上传</label>
+                    </dt>
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$info.is_identity}">
+                    <i id="img_input_a" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_identity}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_identity" name="is_identity" value="{$info.is_identity}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+
+
+        <!--驾驶证上传-->
+        <if condition="$cer['is_license'] eq 1">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>驾驶证上传</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_b" target="_blank" class="nyroModal" rel="gal" href="{$info.is_license}">
+                    <i id="img_input_b" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_license}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_license" name="is_license" value="{$info.is_license}" class="type-file-text">
+                <input type="button" name="button" id="button1-b" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back_b')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+        <!--银行卡上传-->
+        <if condition="$cer['is_credit'] eq 1">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>银行卡上传</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_c" target="_blank" class="nyroModal" rel="gal" href="{$info.is_credit}">
+                    <i id="img_input_c" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_credit}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_credit" name="is_credit" value="{$info.is_credit}" class="type-file-text">
+                <input type="button" name="button" id="button1-c" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back_c')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+
+
+        <!--社保卡（营业执照）上传-->
+        <if condition="$cer['is_security']">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>社保卡（营业执照）上传</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_d" target="_blank" class="nyroModal" rel="gal" href="{$info.is_security}">
+                    <i id="img_input_d" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_security}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_security" name="is_security" value="{$info.is_security}" class="type-file-text">
+                <input type="button" name="button" id="button1-d" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back_d')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+        <!--银行流水 -->
+        <if condition="$cer['is_bankflow']">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>银行流水上传</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_e" target="_blank" class="nyroModal" rel="gal" href="{$info.is_bankflow}">
+                    <i id="img_input_e" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_bankflow}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_bankflow" name="is_bankflow" value="{$info.is_bankflow}" class="type-file-text">
+                <input type="button" name="button" id="button1-e" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back_e')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+        <!--房产证 -->
+        <if condition="$cer['is_ownership']">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>房产证上传</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_f" target="_blank" class="nyroModal" rel="gal" href="{$info.is_ownership}">
+                    <i id="img_input_f" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_ownership}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_ownership" name="is_ownership" value="{$info.is_ownership}" class="type-file-text">
+                <input type="button" name="button" id="button1-f" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back_f')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+        <!--商业保险单 -->
+        <if condition="$cer['is_commencial']">
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>商业保险单上传</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_g" target="_blank" class="nyroModal" rel="gal" href="{$info.is_commencial}">
+                    <i id="img_input_g" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$info.is_commencial}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="is_commencial" name="is_ownership" value="{$info.is_commencial}" class="type-file-text">
+                <input type="button" name="button" id="button1-g" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','image','img_call_back_g')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传图片格式文件</p>
+                    </dd>
+                </dl>
+            </div>
+        </if>
+
+        <div class="ncap-form-default">
+            <div class="bot">
+                <input type="hidden"  name="goods_id" value="{$good_id}">
+                <input type="hidden"  name="__token__" value="{$Request.token}" />
+                <!--<a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onClick="ajax_submit_form('addEditGoodsForm','{:U('User/addEditImage?is_ajax=1')}');">确认提交</a>-->
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green"   style="margin-left: 33%" onclick="ConfirmClick()"><i class="sk">确认提交</i></a>
+            </div>
+        </div>
+    </form>
+
+
+    <!--表单数据-->
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+
+
+    function  ConfirmClick(){
+        if($('input[name="is_identity"]').val() == ''){
+            layer.alert("请选择身份证图片上传！",{icon:2});
+            return false;
+        }
+
+        if($('input[name="is_license"]').val() == ''){
+            layer.alert("请选择驾驶证图片上传！",{icon:2});
+            return false;
+        }
+
+        if($('input[name="is_credit"]').val() == ''){
+            layer.alert("请选择银行卡照上传！",{icon:2});
+            return false;
+        }
+
+        if($('input[name="is_security"]').val() == ''){
+            layer.alert("请选择社保卡（营业执照）照上传！",{icon:2});
+            return false;
+        }
+
+        if($('input[name="is_bankflow"]').val() == ''){
+            layer.alert("请选择银行流水图上传！",{icon:2});
+            return false;
+        }
+        if($('input[name="is_ownership"]').val() == ''){
+            layer.alert("请选择房产证图上传！",{icon:2});
+            return false;
+        }
+        if($('input[name="is_commencial"]').val() == ''){
+            layer.alert("请选择商业保险单图上传！",{icon:2});
+            return false;
+        }
+
+        good_id =  $("input[name='goods_id']").val() ;
+
+        identity = $('#is_identity').val();//身份证
+        license = $('#is_license').val(); //驾驶证
+        credit = $('#is_credit').val(); //银行卡
+        security = $('#is_security').val(); //社保卡 营业执照
+        bankflow = $('#is_bankflow').val(); //银行流水
+        ownership = $('#is_ownership').val();//房产证
+        commencial =$('#is_commencial').val(); //商业保险单
+
+
+        $.ajax({
+            dataType:'json' ,
+            url:'/Home/User/actionHandle',
+            data:{'id':good_id ,'identity':identity,'license':license,'credit':credit,'security':security ,'bankflow':bankflow,'ownership':ownership,'commencial':commencial },
+            type:'post',
+            success:function (data) {
+                if(data.status == 0){
+                    layer.alert('您的身份认证已提交至管理员审核，请耐心等待审核结果！！！') ;
+                    location.href = "/index.php?m=Home&c=Index&a=index";
+
+                }else{
+                    layer.alert(data.msg, {icon:5}) ;
+                }
+            }
+        });
+    }
+
+
+
+    /*
+     * 以下是图片上传方法
+     */
+    // 上传商品图片成功回调函数
+    //    function call_back(fileurl_tmp){
+    //        $("#original_img").val(fileurl_tmp);
+    //        $("#original_img2").attr('href', fileurl_tmp);
+    //    }
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#is_identity").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_input_a").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+
+    function img_call_back_b(fileurl_tmp)
+    {
+        $("#is_license").val(fileurl_tmp);
+        $("#img_b").attr('href', fileurl_tmp);
+        $("#img_input_b").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+
+    function img_call_back_c(fileurl_tmp)
+    {
+        $("#is_credit").val(fileurl_tmp);
+        $("#img_c").attr('href', fileurl_tmp);
+        $("#img_input_c").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function img_call_back_d(fileurl_tmp)
+    {
+        $("#is_security").val(fileurl_tmp);
+        $("#img_d").attr('href', fileurl_tmp);
+        $("#img_input_d").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+
+    function img_call_back_e(fileurl_tmp)
+    {
+        $("#is_bankflow").val(fileurl_tmp);
+        $("#img_e").attr('href', fileurl_tmp);
+        $("#img_input_e").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function img_call_back_f(fileurl_tmp)
+    {
+        $("#is_ownership").val(fileurl_tmp);
+        $("#img_f").attr('href', fileurl_tmp);
+        $("#img_input_f").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function img_call_back_g(fileurl_tmp)
+    {
+        $("#is_commencial").val(fileurl_tmp);
+        $("#img_g").attr('href', fileurl_tmp);
+        $("#img_input_g").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function checkForm(){
+        if($('input[name="license"]').val() == ''){
+            layer.alert("请选择驾驶证图片上传！",{icon:2});
+            return false;
+        }
+
+
+        $('#addEditGoodsForm').submit();
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>上传图片</title>
+    <meta charset="utf-8">
+</head>
+
+
+<body>
+
+<form name="formHead" method="post" action="{:U('User/check_submit')}" id="formHead" enctype="multipart/form-data" target="uploadfrm">
+
+    <div>
+
+        <div>
+            <span style="font-size: 26px">请上传驾驶证：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+            <input type="file" name="file_license" id="file_license"   style="width: 30%;height: 100px" onchange="javascript:setImageLicense();" />
+        </div>
+
+
+        <div style="margin-top: 5%">
+            <span style="font-size: 26px">请上传身份证正面照：</span>
+            <input type="file" name="file_head" id="file_head"   style="width: 30%;height: 100px" onchange="javascript:setImagePreview();" />
+        </div>
+
+
+
+
+        <div style="margin-top: 5%">
+            <span style="font-size: 26px">请上传身份证反面照：</span>
+            <input type="file" name="file_head_back" id="file_head_back"   style="width: 30%;height: 100px" onchange="javascript:setHeadBack();" />
+        </div>
+
+
+        <div style="margin-top: 5%">
+            <span style="font-size: 26px">请上传银行卡正面照：</span>
+            <input type="file" name="file_credit" id="file_credit"   style="width: 30%;height: 100px" onchange="javascript:setCreditPreview();" />
+        </div>
+
+
+        <div style="margin-top: 5%">
+            <span style="font-size: 26px">请上传银行卡反面照：</span>
+            <input type="file" name="file_credit_back" id="file_credit_back"   style="width: 30%;height: 100px" onchange="javascript:setCreditPreviewBack();" />
+        </div>
+
+
+
+    </div>
+
+    <div>
+        <div id="DivUp" style="display: none">
+            <input type="submit" data-inline="true"   style="text-align: center;width: 30% ;height: 100px"  id="BtnUp" value="确认上传" data-mini="true" />
+        </div>
+
+    </div>
+</form>
+
+<div data-role="fieldcontain"  style="margin-top: 5%">
+    <div id="localImag_license">
+        <img id="preview_license" width="-1" height="-1" style="display: none" />
+    </div>
+</div>
+
+
+<div data-role="fieldcontain" style="margin-top: 5%">
+    <div id="localImag">
+        <img id="preview" width="-1" height="-1" style="display: none" />
+    </div>
+</div>
+
+<div data-role="fieldcontain" style="margin-top: 5%">
+    <div id="localImag_head">
+        <img id="preview_head" width="-1" height="-1" style="display: none" />
+    </div>
+</div>
+
+
+<div data-role="fieldcontain" style="margin-top: 5%">
+    <div id="localImag_credit">
+        <img id="preview_credit" width="-1" height="-1" style="display: none" />
+    </div>
+</div>
+
+<div data-role="fieldcontain" style="margin-top: 5%">
+    <div id="localImag_credit_back">
+        <img id="preview_credit_back" width="-1" height="-1" style="display: none" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    function  uploadImg(){
+        alert("abcd");
+    }
+
+    function setCreditPreviewBack() {
+        var preview_credit_back, img_txt, localImag_credit_back, file_credit_back = document.getElementById("file_credit_back"),
+            picture = file_credit_back.value;
+        if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),
+            !1;
+        if (preview_credit_back = document.getElementById("preview_credit_back"), file_credit_back.files && file_credit_back.files[0]) preview_credit_back.style.display = "block",
+            preview_credit_back.style.width = "70%",
+            preview_credit_back.style.height = "70%",
+            preview_credit_back.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_credit_back.files[0]) : window.URL.createObjectURL(file_credit_back.files[0]);
+        else {
+            file_credit_back.select(),
+                file_credit_back.blur(),
+                img_txt = document.selection.createRange().text,
+                localImag_credit_back = document.getElementById("localImag_credit_back"),
+                localImag_credit_back.style.width = "63px",
+                localImag_credit_back.style.height = "63px";
+            try {
+                localImag_credit_back.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",
+                    localImag_credit_back.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt
+            } catch(f) {
+                return alert("您上传的图片格式不正确，请重新选择！"),
+                    !1
+            }
+            preview_license.style.display = "none",
+                document.selection.empty()
+        }
+//        return document.getElementById("DivUp").style.display = "block",
+//            !0
+    }
+
+    function setCreditPreview() {
+        var preview_credit, img_txt, localImag_credit, file_credit = document.getElementById("file_credit"),
+            picture = file_credit.value;
+        if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),
+            !1;
+        if (preview_credit = document.getElementById("preview_credit"), file_credit.files && file_credit.files[0]) preview_credit.style.display = "block",
+            preview_credit.style.width = "70%",
+            preview_credit.style.height = "70%",
+            preview_credit.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_credit.files[0]) : window.URL.createObjectURL(file_credit.files[0]);
+        else {
+            file_credit.select(),
+                file_credit.blur(),
+                img_txt = document.selection.createRange().text,
+                localImag_credit = document.getElementById("localImag_credit"),
+                localImag_credit.style.width = "63px",
+                localImag_credit.style.height = "63px";
+            try {
+                localImag_credit.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",
+                    localImag_credit.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt
+            } catch(f) {
+                return alert("您上传的图片格式不正确，请重新选择！"),
+                    !1
+            }
+            preview_license.style.display = "none",
+                document.selection.empty()
+        }
+//        return document.getElementById("DivUp").style.display = "block",
+//            !0
+    }
+
+    function setHeadBack() {
+        var preview_head, img_txt, localImag_head, file_head_back = document.getElementById("file_head_back"),
+            picture = file_head_back.value;
+        if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),
+            !1;
+        if (preview_head = document.getElementById("preview_head"), file_head_back.files && file_head_back.files[0]) preview_head.style.display = "block",
+            preview_head.style.width = "70%",
+            preview_head.style.height = "70%",
+            preview_head.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_head_back.files[0]) : window.URL.createObjectURL(file_head_back.files[0]);
+        else {
+            file_head_back.select(),
+                file_head_back.blur(),
+                img_txt = document.selection.createRange().text,
+                localImag_head = document.getElementById("localImag_head"),
+                localImag_head.style.width = "63px",
+                localImag_head.style.height = "63px";
+            try {
+                localImag_head.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",
+                    localImag_head.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt
+            } catch(f) {
+                return alert("您上传的图片格式不正确，请重新选择！"),
+                    !1
+            }
+            preview_license.style.display = "none",
+                document.selection.empty()
+        }
+//        return document.getElementById("DivUp").style.display = "block",
+//            !0
+    }
+
+    function setImageLicense() {
+        var preview_license, img_txt, localImag_license, file_license = document.getElementById("file_license"),
+            picture = file_license.value;
+        if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),
+            !1;
+        if (preview_license = document.getElementById("preview_license"), file_license.files && file_license.files[0]) preview_license.style.display = "block",
+            preview_license.style.width = "70%",
+            preview_license.style.height = "70%",
+            preview_license.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_license.files[0]) : window.URL.createObjectURL(file_license.files[0]);
+        else {
+            file_license.select(),
+                file_license.blur(),
+                img_txt = document.selection.createRange().text,
+                localImag_license = document.getElementById("localImag_license"),
+                localImag_license.style.width = "63px",
+                localImag_license.style.height = "63px";
+            try {
+                localImag_license.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",
+                    localImag_license.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt
+            } catch(f) {
+                return alert("您上传的图片格式不正确，请重新选择！"),
+                    !1
+            }
+            preview_license.style.display = "none",
+                document.selection.empty()
+        }
+//        return document.getElementById("DivUp").style.display = "block",
+//            !0
+    }
+
+    function setImagePreview() {
+        var preview, img_txt, localImag, file_head = document.getElementById("file_head"),
+            picture = file_head.value;
+        if (!picture.match(/.jpg|.gif|.png|.bmp/i)) return alert("您上传的图片格式不正确，请重新选择！"),
+            !1;
+        if (preview = document.getElementById("preview"), file_head.files && file_head.files[0]) preview.style.display = "block",
+            preview.style.width = "70%",
+            preview.style.height = "70%",
+            preview.src = window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1 ? window.webkitURL.createObjectURL(file_head.files[0]) : window.URL.createObjectURL(file_head.files[0]);
+        else {
+            file_head.select(),
+                file_head.blur(),
+                img_txt = document.selection.createRange().text,
+                localImag = document.getElementById("localImag"),
+                localImag.style.width = "63px",
+                localImag.style.height = "63px";
+            try {
+                localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",
+                    localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt
+            } catch(f) {
+                return alert("您上传的图片格式不正确，请重新选择！"),
+                    !1
+            }
+            preview.style.display = "none",
+                document.selection.empty()
+        }
+        return document.getElementById("DivUp").style.display = "block",
+            !0
+    }
+</script>
+</body>
+</html>
