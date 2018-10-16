@@ -142,7 +142,7 @@ class Uploadify extends Base{
     }
     
     public function preview(){
-	    
+
 	    // 此页面用来协助 IE6/7 预览图片，因为 IE 6/7 不支持 base64
 		$DIR = 'preview';
 		// Create target dir

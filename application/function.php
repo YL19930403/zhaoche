@@ -697,3 +697,25 @@ function is_https()
 {
     return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] && $_SERVER['HTTPS'] != 'off';
 }
+
+/**
+ * 打印函数
+ */
+function P($arr, $isDie = false)
+{
+    if (is_bool($arr)) {
+        var_dump($arr);
+    } elseif (is_null($arr)) {
+        var_dump(null);
+    } else {
+        if (PHP_SAPI === 'cli') {
+            print_r($arr);
+        } else {
+            echo "<pre style='position:relative;z-index:1000;padding:10px;border-radius:5px;background:#F5F5F5;border:1px solid #aaa;font-size:14px;line-height:18px;opacity:0.9;'>" . print_r($arr,
+                    true) . "</pre>";
+        }
+    }
+    if ($isDie) {
+        die();
+    }
+}

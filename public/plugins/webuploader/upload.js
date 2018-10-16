@@ -132,29 +132,35 @@ $(function() {
 	}
 
 	function webuploader(opts){
-
 		var defaults = {
 			swf: 'webuploader/Uploader.swf',
+			// server: 'http://www.zhaoche.com/index.php?m=Admin&c=FileUpload&a=fileUpload',
 			server: 'fileupload.php',
-			fileNumLimit: 10,
-			fileSizeLimit: 50 * 1024 * 1024,    // 50 M
-			fileSingleSizeLimit: 5 * 1024 * 1024,    // 5 M
+			fileNumLimit: 100,
+			fileSizeLimit: 80 * 1024 * 1024,    // 80 M
+			fileSingleSizeLimit: 80 * 1024 * 1024,    // 80 M
 			pick: {
 				id: '#filePicker',
 				label: '点击选择图片',
-				name : 'file'
+				// innerHTML:'点击选择文件',
+				name : 'file',
+				// multiple:false
+
 			},
 			dnd: '#dndArea',
 			paste: '#uploader',
-			chunked: false,
+			chunked: true, //false 默认是false，不切片
 			chunkSize: 512 * 1024,
-			/*
+			threads:3 , //上传并发数，默认为3
+            prepareNextFile:'true' ,  //是否允许在文件传输时把下一个文件准备好
+
+
 			formData: {},
 			accept: {
 				 title: 'Images',
 				 extensions: 'gif,jpg,jpeg,bmp,png,rar,zip',
 				 mimeTypes: 'image/*'
-			},*/
+			},
 			//禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
 			disableGlobalDnd: true
 		};
@@ -209,12 +215,11 @@ $(function() {
 			if(data.state == 'SUCCESS'){
 				var sLi = "";
 				sLi += '<li class="img">';
-				sLi += '<img src="' + data.url + '" width="100" height="100" onerror="this.src=\'__ROOT__/Public/plugins/uploadify/nopic.png\'">';
+				sLi += '<img src="' + data.url + '" width="100" height="100" onerror="this.src=\'/Public/plugins/nopic.png\'">';
 				sLi += '<input type="hidden" name="fileurl_tmp[]" value="' + data.url + '">';
 				sLi += '<a href="javascript:void(0);">删除</a>';
 				sLi += '</li>';
 				$(".fileWarp ul").append(sLi);
-
 				$( '#'+file.id ).append('<div class="file-panel" style="height:0px;"><span class="cancel" data-img="'+data.url+'" onclick="Manager.del(this);">删除</span></div>');
 				$( '#'+file.id ).hover(function(){
 					$( '#'+file.id ).find('.file-panel').css('height','30px');
@@ -926,11 +931,13 @@ $(function() {
 
 		//选中文件
 		sure : function($file){
+			alert('aaa');
+			return ;
 			var data = $file.data('file');
 			//console.log(data);
 			var sLi = "";
 			sLi += '<li class="img">';
-			sLi += '<img src="' + data.url + '" width="100" height="100" onerror="this.src=\'__ROOT__/Public/plugins/uploadify/nopic.png\'">';
+			sLi += '<img src="' + data.url + '" width="100" height="100" onerror="this.src=\'/Public/plugins/nopic.png\'">';
 			sLi += '<input type="hidden" name="fileurl_tmp[]" value="' + data.url + '">';
 			sLi += '<a href="javascript:void(0);">删除</a>';
 			sLi += '</li>';

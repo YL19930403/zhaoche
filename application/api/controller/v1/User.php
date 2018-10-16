@@ -775,30 +775,22 @@ class User  extends   Base {
 
         //(new  IDMustBeInteger())->goCheck() ;
 
-        $file  =   request()->file('image') ;
-        
+            $file  =   request()->file('image') ;
+            if($file == NULL ){
+                $e = new  ParameterException(array(
+                    'msg' => '上传图片不能为空' ,
+                    'errorCode' => '391021',
+                ));
+                throw  $e ;
+            }
 
-        if($file == NULL ){
-            $e = new  ParameterException(array(
-                'msg' => '上传图片不能为空' ,
-                'errorCode' => '391021',
-            ));
-            throw  $e ;
-        }
-
-        if(!isAppPositiveInteger($user_id)){
-            $e = new  ParameterException(array(
-                'msg' => '用户编码必须为正整数' ,
-                'errorCode' => '391022',
-            ));
-            throw  $e ;
-        }
-
-
-
-
-
-
+            if(!isAppPositiveInteger($user_id)){
+                $e = new  ParameterException(array(
+                    'msg' => '用户编码必须为正整数' ,
+                    'errorCode' => '391022',
+                ));
+                throw  $e ;
+            }
             $id  =  M('users')->where('user_id' , $user_id)->getField('user_id');
             if($id == NULL ){
                 $e = new  ParameterException(array(

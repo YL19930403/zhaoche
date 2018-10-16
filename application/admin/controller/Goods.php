@@ -292,9 +292,10 @@ class Goods extends Base {
             $Page  = new AjaxPage($count,10);
             $show = $Page->show();
             $order_str = "`{$_POST['orderby1']}` {$_POST['orderby2']}";
+            $order = (empty($order_str)) ? 'goods_id' : $order_str ;
             $goodsList = M('Goods a')
                 ->where($where)
-                ->order($order_str)
+                ->order($order)
                 ->limit($Page->firstRow.','.$Page->listRows)
                 ->select();
         }else{
@@ -364,6 +365,8 @@ class Goods extends Base {
         $users = M('inst')
             ->where('plat_admin_id','=',$admin_info['admin_id'])
             ->find();
+
+
         //机构
         $sql = M('inst')->select();
         $GoodsLogic = new GoodsLogic();
@@ -427,7 +430,6 @@ class Goods extends Base {
             } else {
                 $Goods->price_ladder = '';
             }
-
 
             if ($type == 2) {
                 $Goods->last_update = time();

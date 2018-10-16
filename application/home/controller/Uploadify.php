@@ -17,7 +17,7 @@ class Uploadify extends Base {
 
 	public function upload(){
 		$func = I('func');
-		$path = I('path','temp');
+		$path = I('path','temp');  //path(上传到本地)  、savepath(上传到oss)
 		$info = array(
 				'num'=> I('num/d'),
 				'title' => '',

@@ -154,26 +154,35 @@ class Ueditor extends Base
 			$file = request()->file('upfile');
 		}
 		$result = true;
+        $return_url = '';
 		if (true !== $result || empty($file)) {
 			$state = "ERROR" . $result;
             return json_encode(['state' =>$state]);
 		}else{
 			// 移动到框架应用根目录/public/uploads/ 目录下
 			$this->savePath = $this->savePath.date('Y').'/'.date('m-d').'/';
-			// 使用自定义的文件保存规则
-			$info = $file->rule(function ($file) {
-				return  md5(mt_rand());
-			})->move('public/upload/'.$this->savePath);
+
+//			// 使用自定义的文件保存规则
+//			$info = $file->rule(function ($file) {
+//				return  md5(mt_rand());
+//			})->move('public/upload/'.$this->savePath);
+
+            //上传图片到OSS
+            $this->savePath = 'public/upload'.$this->savePath ;
+            $object = $this->savePath.md5(time()).'.'.pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
+            $ossClient = new \app\common\logic\OssLogic;
+            $return_url = $ossClient->uploadFile($file->getRealPath(), $object);
 		}
 
-		if($info){
+		if($return_url){
 			$data = array(
 				'state' => 'SUCCESS',
-				'url' => '/public/upload/'.$this->savePath.$info->getSaveName(),
-				'title' => $info->getFilename(),
-				'original' => $info->getFilename(),
-				'type' => '.' . $info->getExtension(),
-				'size' => $info->getSize(),
+//				'url' => '/public/upload/'.$this->savePath.$info->getSaveName(),
+				'url' => $return_url ,
+//				'title' => $info->getFilename(),
+//				'original' => $info->getFilename(),
+//				'type' => '.' . $info->getExtension(),
+//				'size' => $info->getSize(),
 			);
 			//图片加水印
 			if($this->savePath=='goods/'){
@@ -406,6 +415,80 @@ class Ueditor extends Base
 	    return json_encode($data);
 	}
 
+    public function imageUp_beifen()
+    {
+        // 上传图片框中的描述表单名称，
+        $pictitle = I('pictitle');
+        $dir = I('dir');
+        $title = htmlspecialchars($pictitle , ENT_QUOTES);
+        $path = htmlspecialchars($dir, ENT_QUOTES);
+        //$input_file ['upfile'] = $info['Filedata'];  一个是上传插件里面来的, 另外一个是 文章编辑器里面来的
+        // 获取表单上传文件
+        $file = request()->file('file');
+        if(empty($file))
+            $file = request()->file('upfile');
+
+        $result = $this->validate(
+            ['file' => $file],
+            ['file'=>'image|fileSize:40000000|fileExt:jpg,jpeg,gif,png'],
+            ['file.image' => '上传文件必须为图片','file.fileSize' => '上传文件过大','file.fileExt'=>'上传文件后缀名必须为jpg,jpeg,gif,png']
+        );
+        if (true !== $result || !$file) {
+            $state = "ERROR" . $result;
+        } else {
+            $savePath = $this->savePath.date('Y').'/'.date('m-d').'/';
+            $ossConfig = tpCache('oss');
+            $ossSupportPath = ['goods', 'water'];
+            if (in_array(I('savepath'), $ossSupportPath) && $ossConfig['oss_switch']) {
+                //商品图片可选择存放在oss
+                $object = 'public/upload/'.$savePath.md5(time()).'.'.pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
+                $ossClient = new \app\common\logic\OssLogic;
+                $return_url = $ossClient->uploadFile($file->getRealPath(), $object);
+                if (!$return_url) {
+                    $state = "ERROR" . $ossClient->getError();
+                    $return_url = '';
+                } else {
+                    $state = "SUCCESS";
+                }
+                @unlink($file->getRealPath());
+            } else {
+                // 移动到框架应用根目录/public/uploads/ 目录下
+                $info = $file->rule(function ($file) {
+                    return  md5(mt_rand()); // 使用自定义的文件保存规则
+                })->move('public/upload/'.$savePath);
+                if ($info) {
+                    $state = "SUCCESS";
+                } else {
+                    $state = "ERROR" . $file->getError();
+                }
+                $return_url = '/public/upload/'.$savePath.$info->getSaveName();
+            }
+            $return_data['url'] = $return_url;
+        }
+
+        if($state == 'SUCCESS'){
+            if($this->savePath=='Goods/'){
+                $image = new \Think\Image();
+                $water = tpCache('water');
+                $imgresource = ".".$return_data['url'];
+                $image->open($imgresource);
+                if($water['is_mark']==1 && $image->width()>$water['mark_width'] && $image->height()>$water['mark_height']){
+                    if($water['mark_type'] == 'text'){
+                        $image->text($water['mark_txt'],'./hgzb.ttf',20,'#000000',9)->save($imgresource);
+                    }else{
+                        $image->water(".".$water['mark_img'],9,$water['mark_degree'])->save($imgresource);
+                    }
+                }
+            }
+        }
+        $return_data['title'] = $title;
+        $return_data['original'] = ''; // 这里好像没啥用 暂时注释起来
+        $return_data['state'] = $state;
+        $return_data['path'] = $path;
+        $this->ajaxReturn($return_data,'json');
+    }
+
+
     /**
      * @function imageUp
      */
@@ -431,9 +514,9 @@ class Ueditor extends Base
             $state = "ERROR" . $result;
         } else {
             $savePath = $this->savePath.date('Y').'/'.date('m-d').'/';
-            $ossConfig = tpCache('oss');
+            $ossConfig = tpCache('oss_switch');
             $ossSupportPath = ['goods', 'water'];
-            if (in_array(I('savepath'), $ossSupportPath) && $ossConfig['oss_switch']) {
+            if (in_array(I('savepath'), $ossSupportPath) ) { // && $ossConfig['oss_switch']
                 //商品图片可选择存放在oss
                 $object = 'public/upload/'.$savePath.md5(time()).'.'.pathinfo($file->getInfo('name'), PATHINFO_EXTENSION);
                 $ossClient = new \app\common\logic\OssLogic;

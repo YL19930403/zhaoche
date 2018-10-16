@@ -27,10 +27,10 @@ class OssLogic
 {
 
     static private $initConfigFlag = false;
-    static private $accessKeyId = '';
-    static private $accessKeySecret = '';
-    static private $endpoint = '';
-    static private $bucket = '';
+    static private $accessKeyId = 'LTAIOYKXlUYZ8pKo';
+    static private $accessKeySecret = 'mLMtMpSWiCaBnwJoVd8Far1BmDoVJi';
+    static private $endpoint = 'http://oss-cn-shenzhen.aliyuncs.com';
+    static private $bucket = 'zhaochewang';
     
     /** @var \OSS\OssClient */
     static private $ossClient = null;
@@ -67,7 +67,7 @@ class OssLogic
         if (self::$initConfigFlag) {
             return;
         }
-        
+        /*
         $c = [];
         $configItems = 'oss_key_id,oss_key_secret,oss_endpoint,oss_bucket';
         $config = M('config')->field('name,value')->where('name', 'IN', $configItems)->select();
@@ -79,6 +79,7 @@ class OssLogic
         self::$endpoint        = $c['oss_endpoint'] ?: '';
         self::$bucket          = $c['oss_bucket'] ?: '';
         self::$initConfigFlag  = true;
+        */
     }
 
     static private function getOssClient()
@@ -112,13 +113,14 @@ class OssLogic
         }
         
         try {
-            $ossClient->uploadFile(self::$bucket, $object, $filePath);
+           $result = $ossClient->uploadFile(self::$bucket, $object, $filePath);
         } catch (OssException $e) {
             self::$errorMsg = "oss上传文件失败，".$e->getMessage();
             return false;
         }
         
-        return $this->getSiteUrl().'/'.$object;
+//        return $this->getSiteUrl().'/'.$object;
+        return $result['info']['url'];
     }
     
     /**

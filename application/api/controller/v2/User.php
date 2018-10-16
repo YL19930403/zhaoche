@@ -2,8 +2,12 @@
 
 namespace app\api\controller\v2 ;
 
+use app\common\logic\OssLogic;
 use  app\lib\exception\ParameterException ;
 use  app\api\controller\v1\Base ;
+use OSS\OssClient;
+use think\Config;
+require_once './vendor/aliyun-oss-php-sdk/autoload.php';
 
 class User  extends   Base {
     //    用户登录接口
@@ -658,6 +662,87 @@ class User  extends   Base {
             ));
             throw  $e ;
         }
+    }
+
+    /**
+     * 测试 OSS
+     * @throws ParameterException
+     */
+    public  function uploadimg(){
+        $user_id =   request()->get('user_id') ;
+
+        //(new  IDMustBeInteger())->goCheck() ;
+
+//        $file  =   request()->file('image') ;
+        $file = $_FILES['image'];
+
+        if($file == NULL ){
+            $e = new  ParameterException(array(
+                'msg' => '上传图片不能为空' ,
+                'errorCode' => '391021',
+            ));
+            throw  $e ;
+        }
+
+        if(!isAppPositiveInteger($user_id)){
+            $e = new  ParameterException(array(
+                'msg' => '用户编码必须为正整数' ,
+                'errorCode' => '391022',
+            ));
+            throw  $e ;
+        }
+
+
+        $id  =  M('users')->where('user_id' , $user_id)->getField('user_id');
+        if($id == NULL ){
+            $e = new  ParameterException(array(
+                'msg' => '该用户不存在' ,
+                'errorCode' => '391011',
+            ));
+            throw  $e ;
+        }
+
+        $object = 'abc';
+        $filePath = '/usr/local/IMG_1269.jpg';
+        //上传照片到OSS
+        $ossClient = new OssClient(Config::get('ACCESS_KEY_ID'), Config::get('ACCESS_KEY_SECRET'),Config::get('END_POINT'));
+        $res = $ossClient->uploadFile(Config::get('BUCKET'),$object,$filePath);
+        var_dump($res);die;
+//        $res = $ossClient->putObject(Config::get('BUCKET') , $file ,'aaa');
+//        $ossClient->uploadFile();
+//        var_dump($res);die;
+
+//        $ossLogic = new OssLogic() ;
+//        $res = $ossLogic->uploadFile($file['tmp_name'], $file);
+//        var_dump($res);die;
+//        var_dump($file['name']);die;
+//        $ossLogic->uploadFile();
+
+        //删除数据库中原有的图片， 上传新的图片
+//        $head_pic_url =  M('users')->where('user_id' , $user_id)->getField('head_pic');
+//        if($head_pic_url != ""){
+//
+//            @unlink(substr($head_pic_url, 1)) ;
+//        }
+
+//        $res =   M('users')->where('user_id' , $user_id)->save(['head_pic' => $path]) ;
+//        if($res){
+//            $path = addslashes($path);
+//            //图片上传成功
+//            $e = new  ParameterException(array(
+//                'msg' => '图片上传成功' ,
+//                'errorCode' => '0',
+//                'datas' =>  BASE_PATH  . $path  ,
+//            ));
+//            throw  $e ;
+//        }else{
+//            //图片上传失败
+//            $e = new  ParameterException(array(
+//                'msg' => '图片上传失败' ,
+//                'errorCode' => '391010',
+//            ));
+//            throw  $e ;
+//        }
     }
 
 }

@@ -15,6 +15,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/jpush/jpush" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/oss-h5-upload-js-php/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/oss-h5-upload-js-php/php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpmailer/examples" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpmailer/extras" />
@@ -64,6 +66,8 @@
           <root url="file://$MODULE_DIR$/vendor/composer" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
           <root url="file://$MODULE_DIR$/vendor/jpush/jpush" />
+          <root url="file://$MODULE_DIR$/vendor/oss-h5-upload-js-php/lib" />
+          <root url="file://$MODULE_DIR$/vendor/oss-h5-upload-js-php/php" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
           <root url="file://$MODULE_DIR$/vendor/phpmailer/examples" />
           <root url="file://$MODULE_DIR$/vendor/phpmailer/extras" />
@@ -109,6 +113,8 @@
           <root url="file://$MODULE_DIR$/vendor/composer" />
           <root url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
           <root url="file://$MODULE_DIR$/vendor/jpush/jpush" />
+          <root url="file://$MODULE_DIR$/vendor/oss-h5-upload-js-php/lib" />
+          <root url="file://$MODULE_DIR$/vendor/oss-h5-upload-js-php/php" />
           <root url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />
           <root url="file://$MODULE_DIR$/vendor/phpmailer/examples" />
           <root url="file://$MODULE_DIR$/vendor/phpmailer/extras" />
